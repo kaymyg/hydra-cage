@@ -1,0 +1,70 @@
+name: ci
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  tests:
+    name: tests (${{ matrix.python }})
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        python: ["3.10", "3.11", "3.12"]
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python }}
+
+      - name: Install
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+
+      - name: Unit and integration tests
+        env:
+          HYDRA_NO_COLOR: "1"
+        run: pytest tests/ -q
+
+      - name: Adversary suite must block every attack
+        env:
+          HYDRA_NO_COLOR: "1"
+        run: |
+          python hydra_cli.py --backend process --layers 4 \
+            --workdir "${RUNNER_TEMP}/hydra" --quiet --purge attack
+
+  docker-backend:
+    name: real containers
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+
+      - name: Build the containment layer image
+        run: docker build -t hydra-layer:latest docker/
+
+      - name: Adversary suite on real containers
+        env:
+          HYDRA_NO_COLOR: "1"
+        run: |
+          python hydra_cli.py --backend docker --layers 3 \
+            --workdir "${RUNNER_TEMP}/hydra" --quiet --purge attack
+
+      - name: Clean up stray domains
+        if: always()
+        run: |
+          docker ps -aq --filter "name=hydra-" | xargs -r docker rm -f
+          docker network ls -q --filter "name=hydra-net-" | xargs -r docker network rm || true
