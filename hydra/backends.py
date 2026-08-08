@@ -25,6 +25,7 @@ from __future__ import annotations
 
 import json
 import os
+import platform
 import shutil
 import signal
 import subprocess
@@ -531,7 +532,7 @@ class ProcessBackend(IsolationBackend):
             registers={
                 "firmware": self._fw,
                 "image": sha256_bytes(b"process-rootfs-v1"),
-                "kernel": sha256_bytes(os.uname().release.encode()),
+                "kernel": sha256_bytes(platform.release().encode()),
                 # supervisor reads the payload directly from the host fs
                 "entrypoint": manifest_from_dir(payload),
                 "config": sha256_obj(cfg),
