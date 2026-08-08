@@ -1,0 +1,28 @@
+cff-version: 1.2.0
+title: "The Hydra Cage: Disposable Trust and Regenerative Containment for Autonomous AI"
+message: "If you use this work, please cite it as below."
+type: software
+authors:
+  - alias: kaymyg
+repository-code: "https://github.com/kaymyg/hydra-cage"
+url: "https://huggingface.co/spaces/Sahek/hydra-cage"
+license: Apache-2.0
+version: "1.0.0"
+date-released: "2026-08-08"
+keywords:
+  - ai-safety
+  - containment
+  - sandboxing
+  - remote-attestation
+  - confidential-computing
+abstract: >-
+  A containment architecture for autonomous AI that treats trust as a renewable
+  resource rather than a fixed resource to be defended. Rather than stacking a
+  fixed number of walls, a breached layer is frozen, severed, preserved as
+  immutable forensic evidence, permanently revoked, and replaced by a freshly
+  measured domain instantiated outside the attacker's position. Five
+  functionally separate planes (execution, containment, attestation,
+  regeneration, evidence) each hold an independent root of trust, and four
+  enforced laws forbid self-attestation, self-regeneration, identity
+  inheritance, and trust recovery. The reference implementation orchestrates
+  real containers and ships an adversary suite of ten escape attempts.

@@ -1,0 +1,23 @@
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.ruff_cache/
+*.egg-info/
+build/
+dist/
+
+# Live cage state: domains, telemetry, sealed forensic artifacts.
+# Sealed artifacts are chmod 0444, so `rm -rf` needs a chmod first --
+# `make clean` handles it.
+.hydra/
+
+.venv/
+venv/
+.env
+.DS_Store
+
+# Local publishing aids, not part of the project.
+/hydra-cage.bundle
+/PUBLISH.md
+/bootstrap.ps1
+/push.ps1
