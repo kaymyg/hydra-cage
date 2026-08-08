@@ -11,9 +11,12 @@ from hydra import CageConfig, HydraCage  # noqa: E402
 
 @pytest.fixture
 def cage(tmp_path):
+    # HYDRA_TEST_BACKEND=memory runs the whole suite against the in-process
+    # backend the browser Space uses. Every law, quote check and transition
+    # stage must behave identically on both.
     cfg = CageConfig(
         layers=3,
-        backend="process",
+        backend=os.environ.get("HYDRA_TEST_BACKEND", "process"),
         workdir=str(tmp_path / "hydra"),
         payload=os.path.join(ROOT, "payload"),
         prewarm=1,

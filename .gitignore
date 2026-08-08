@@ -16,8 +16,11 @@ venv/
 .env
 .DS_Store
 
-# Local publishing aids, not part of the project.
+# Machine-local scaffolding, not part of the project.
+# NOTE: space_publish.py is deliberately NOT here -- CI runs
+# `python space_publish.py --build`, so it has to be in the repo.
 /hydra-cage.bundle
 /PUBLISH.md
 /bootstrap.ps1
 /push.ps1
+/push_space.ps1
