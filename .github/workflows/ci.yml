@@ -8,12 +8,13 @@ on:
 
 jobs:
   tests:
-    name: tests (${{ matrix.python }})
+    name: tests (py${{ matrix.python }}, ${{ matrix.backend }})
     runs-on: ubuntu-latest
     strategy:
       fail-fast: false
       matrix:
         python: ["3.10", "3.11", "3.12"]
+        backend: [process, memory]
     steps:
       - uses: actions/checkout@v4
 
@@ -29,14 +30,57 @@ jobs:
       - name: Unit and integration tests
         env:
           HYDRA_NO_COLOR: "1"
+          HYDRA_TEST_BACKEND: ${{ matrix.backend }}
         run: pytest tests/ -q
 
       - name: Adversary suite must block every attack
         env:
           HYDRA_NO_COLOR: "1"
         run: |
-          python hydra_cli.py --backend process --layers 4 \
+          python hydra_cli.py --backend ${{ matrix.backend }} --layers 4 \
             --workdir "${RUNNER_TEMP}/hydra" --quiet --purge attack
+
+  browser:
+    name: in-browser bundle (Pyodide)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+
+      - name: Build the Space bundle
+        run: python space_publish.py --build
+
+      - name: Run the cage under real Pyodide/WASM
+        run: |
+          npm install pyodide@314.0.3 --silent
+          cat > ci_browser.mjs <<'EOF'
+          import { loadPyodide } from "pyodide";
+          import fs from "node:fs";
+          const py = await loadPyodide();
+          // Mimic the browser: fetch().arrayBuffer() yields an ArrayBuffer.
+          const nodeBuf = fs.readFileSync("build/space/hydra_web.zip");
+          py.unpackArchive(Uint8Array.from(nodeBuf).buffer, "zip");
+          py.runPython(`
+          import sys; sys.path.insert(0, "/home/pyodide")
+          import driver
+          `);
+          const driver = py.pyimport("driver");
+          driver.boot(4);
+          const report = driver.run_all_attacks();
+          const checks = driver.self_check();
+          if (/ESCAPED/.test(report)) { console.error(report); process.exit(1); }
+          if (/FAIL/.test(checks))    { console.error(checks); process.exit(1); }
+          const m = report.match(/(\d+)\/(\d+) blocked/);
+          if (!m || m[1] !== m[2]) { console.error(report); process.exit(1); }
+          console.log(`browser bundle OK -- ${m[0]}`);
+          EOF
+          node ci_browser.mjs
 
   docker-backend:
     name: real containers

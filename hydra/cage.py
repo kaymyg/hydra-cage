@@ -39,7 +39,7 @@ from .transition import HydraBreachTransition, TransitionAborted, TransitionReco
 class CageConfig:
     layers: int = 4
     role: str = "containment"
-    backend: str = "auto"            # auto | docker | process
+    backend: str = "auto"            # auto | docker | process | memory
     image: str = "hydra-layer:latest"
     workdir: str = "./.hydra"
     payload: str = "./payload"

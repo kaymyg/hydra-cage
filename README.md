@@ -7,7 +7,7 @@
 **Disposable trust and regenerative containment for autonomous AI.**
 
 **[▶ Run it in your browser](https://huggingface.co/spaces/Sahek/hydra-cage)** — the
-demo and the full adversary suite, live in a Space.
+real package and the full adversary suite, compiled to WebAssembly. No server.
 
 A working implementation of a containment architecture that does not try to be
 an unbreakable box. When a layer is breached, Hydra does not patch it. It
@@ -258,9 +258,19 @@ revokes the domain's link directory, preserve is a tar snapshot. Weaker
 isolation, identical trust topology. Runs anywhere, which is why the demo and
 the test suite default to it.
 
-`select_backend("auto", ...)` prefers Docker and falls back cleanly.
+**`MemoryBackend`** — for environments with no processes at all, such as
+Pyodide in a browser. Domains are entries in a supervisor-held registry and
+their code is `exec`'d in-process under a watchdog. **No memory protection, no
+privilege boundary** — it demonstrates the trust protocol, not enforcement.
+The sentinel still never asks a domain for its measurement and hardware
+identity still comes from a registry no domain can reach, which is why the
+same 58 tests pass against it.
 
----
+`select_backend("auto", ...)` prefers Docker, falls back to processes, and
+falls back again to memory where `os.fork` does not exist.
+
+The full suite runs against `process` and `memory` in CI, and a third job runs
+the browser bundle under real Pyodide/WASM in Node.
 
 ## Honest limits
 
@@ -307,10 +317,12 @@ hydra/
 payload/              code that runs INSIDE a domain (agent, responder, entrypoint)
 adversary/            ten attacks + the malicious responder variants
 docker/Dockerfile     the containment layer image
-tests/                58 tests
+tests/                58 tests, run against both process and memory backends
 demo.py               five-act demonstration
 hydra_cli.py          up / breach / attack / demo / status / forensics
-hf_space/             Hugging Face Space front end (Docker SDK + Gradio)
+web/                  the static Space: Pyodide UI + browser driver
+hf_space/             Docker-SDK Space variant (needs a PRO account)
+space_publish.py      stage / diagnose / publish the Space
 scripts/              build_space.sh, push_space.sh
 ```
 
@@ -325,13 +337,24 @@ that code runs on the other side of the boundary.
 The repo is the single source of truth; the Space is assembled from it.
 
 ```bash
-make space          # stage build/space/ from hf_space/ + the package
-make space-push     # stage and upload to huggingface.co/spaces/Sahek/hydra-cage
+python space_publish.py --check    # inspect the Space, change nothing
+python space_publish.py --build    # stage build/space locally
+python space_publish.py            # stage and upload
+python space_publish.py --reset    # delete, recreate as static, upload
 ```
 
-`scripts/push_space.sh` needs `pip install -U "huggingface_hub[cli]"` and
-`hf auth login`. Pass `--create` on first run to create the Space.
+Serve the staged bundle locally to try it before pushing:
 
-Spaces cannot nest containers, so the hosted demo runs the process backend.
-The Docker backend is exercised by CI, which builds the layer image and runs
-the adversary suite against real containers on every push.
+```bash
+python space_publish.py --build
+python -m http.server -d build/space 8000
+```
+
+Hugging Face now requires a PRO subscription to create Gradio or Docker
+Spaces; static Spaces remain free. So the published Space is **static** and
+runs the cage client-side under Pyodide — the same package and the same
+adversary suite, compiled to WebAssembly in the visitor's browser.
+
+`hf_space/` still holds the Docker-SDK variant. It is tested and works, but
+creating that Space needs PRO. `web/` is the free static one that is actually
+published.
