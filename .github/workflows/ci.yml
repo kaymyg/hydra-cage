@@ -16,7 +16,7 @@ jobs:
         python: ["3.10", "3.11", "3.12"]
         backend: [process, memory]
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
 
       - uses: actions/setup-python@v5
         with:
@@ -44,7 +44,7 @@ jobs:
     name: in-browser bundle (Pyodide)
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
 
       - uses: actions/setup-python@v5
         with:
@@ -86,7 +86,7 @@ jobs:
     name: real containers
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
 
       - uses: actions/setup-python@v5
         with:
