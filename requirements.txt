@@ -3,7 +3,7 @@
 # cryptography gives real Ed25519 signatures for attestation quotes. Without
 # it, hydra.identity falls back to HMAC-SHA256 with vault-held keys; the trust
 # topology is identical but the signatures are symmetric. Install it.
-cryptography>=41.0
+cryptography>=50.0.1
 
 # Tests only.
 pytest>=9.1.1

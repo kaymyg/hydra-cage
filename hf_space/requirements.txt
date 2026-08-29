@@ -2,4 +2,4 @@
 # handlers, Textbox autoscroll). Gradio 6 changed enough to warrant an explicit
 # ceiling rather than a surprise on rebuild.
 gradio>=5.49,<6
-cryptography>=41.0
+cryptography>=50.0.1
