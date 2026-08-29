@@ -1,0 +1,5 @@
+blank_issues_enabled: true
+contact_links:
+  - name: Security vulnerability (working, undisclosed escape)
+    url: https://github.com/kaymyg/hydra-cage/security/advisories/new
+    about: Please report working exploits privately — see SECURITY.md

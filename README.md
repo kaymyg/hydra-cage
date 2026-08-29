@@ -3,6 +3,8 @@
 [![ci](https://github.com/kaymyg/hydra-cage/actions/workflows/ci.yml/badge.svg)](https://github.com/kaymyg/hydra-cage/actions/workflows/ci.yml)
 [![Hugging Face Space](https://img.shields.io/badge/%F0%9F%A4%97%20Space-live%20demo-blue)](https://huggingface.co/spaces/Sahek/hydra-cage)
 [![License](https://img.shields.io/badge/license-Apache--2.0-green)](LICENSE)
+[![Python 3.10+](https://img.shields.io/badge/python-3.10%20%7C%203.11%20%7C%203.12-blue)](requirements.txt)
+[![Tests](https://img.shields.io/badge/tests-58%20passing-brightgreen)](tests/)
 
 **Disposable trust and regenerative containment for autonomous AI.**
 
@@ -358,3 +360,27 @@ adversary suite, compiled to WebAssembly in the visitor's browser.
 `hf_space/` still holds the Docker-SDK variant. It is tested and works, but
 creating that Space needs PRO. `web/` is the free static one that is actually
 published.
+
+---
+
+## Contributing
+
+Bug reports, new adversary attacks, and PRs are welcome — see
+[`CONTRIBUTING.md`](CONTRIBUTING.md) for setup and what CI checks. In
+particular, `payload/` must never import from `hydra/`, and
+`ExecutionPlane.audit_reachability()` must keep returning `[]`.
+
+## Security
+
+Found a way to actually defeat containment? Please see
+[`SECURITY.md`](SECURITY.md) for how to report it privately rather than
+opening a public issue with a working exploit.
+
+## Changelog
+
+See [`CHANGELOG.md`](CHANGELOG.md).
+
+## Citing this work
+
+See [`CITATION.cff`](CITATION.cff), or use GitHub's "Cite this repository"
+button.
