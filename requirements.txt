@@ -6,4 +6,4 @@
 cryptography>=41.0
 
 # Tests only.
-pytest>=7.0
+pytest>=9.1.1
