@@ -11,7 +11,7 @@
 # internal, no docker socket, pids and memory limits). Nothing here needs to
 # know about the supervisor, and nothing here can reach it.
 
-FROM python:3.12-alpine
+FROM python:3.14-alpine
 
 # Nothing added. Busybox only, no network clients, no build toolchain.
 RUN rm -rf /var/cache/apk/* && \
