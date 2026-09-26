@@ -1,5 +1,5 @@
 # The app was written against the Gradio 5 API (Blocks, generator event
 # handlers, Textbox autoscroll). Gradio 6 changed enough to warrant an explicit
 # ceiling rather than a surprise on rebuild.
-gradio>=5.49,<6
+gradio>=6.28.0,<7
 cryptography>=41.0
