@@ -161,7 +161,8 @@ def cmd_forensics(args) -> int:
 def main(argv=None) -> int:
     p = argparse.ArgumentParser(prog="hydra", description="Hydra Cage control")
     p.add_argument("--layers", type=int, default=4)
-    p.add_argument("--backend", default="auto", choices=["auto", "docker", "process"])
+    p.add_argument("--backend", default="auto", choices=["auto", "docker", "process", "memory"],
+                   help="isolation backend (memory = in-process, used by the browser build and CI)")
     p.add_argument("--image", default="hydra-layer:latest")
     p.add_argument("--workdir", default="./.hydra")
     p.add_argument("--prewarm", type=int, default=1)
