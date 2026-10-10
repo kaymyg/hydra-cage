@@ -5,6 +5,7 @@
 [![License](https://img.shields.io/badge/license-Apache--2.0-green)](LICENSE)
 [![Python 3.10+](https://img.shields.io/badge/python-3.10%20%7C%203.11%20%7C%203.12-blue)](requirements.txt)
 [![Tests](https://img.shields.io/badge/tests-58%20passing-brightgreen)](tests/)
+[![CodeQL](https://github.com/kaymyg/hydra-cage/actions/workflows/codeql.yml/badge.svg)](https://github.com/kaymyg/hydra-cage/actions/workflows/codeql.yml)
 
 **Disposable trust and regenerative containment for autonomous AI.**
 
