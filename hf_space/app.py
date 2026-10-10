@@ -54,7 +54,8 @@ CSS = """
 
 
 def build() -> gr.Blocks:
-    with gr.Blocks(title="The Hydra Cage", css=CSS, theme=gr.themes.Soft()) as app:
+    # Gradio 6 moved css/theme from Blocks() to launch(); see __main__ below.
+    with gr.Blocks(title="The Hydra Cage") as app:
         gr.Markdown(INTRO)
 
         with gr.Row():
@@ -74,7 +75,7 @@ def build() -> gr.Blocks:
                     label="transcript",
                     lines=32,
                     max_lines=32,
-                    show_copy_button=True,
+                    buttons=["copy"],
                     elem_id="transcript",
                     autoscroll=True,
                 )
@@ -91,7 +92,7 @@ def build() -> gr.Blocks:
                     label="transcript",
                     lines=32,
                     max_lines=32,
-                    show_copy_button=True,
+                    buttons=["copy"],
                     elem_id="transcript",
                     autoscroll=True,
                 )
@@ -112,7 +113,7 @@ def build() -> gr.Blocks:
                     label="transcript",
                     lines=32,
                     max_lines=32,
-                    show_copy_button=True,
+                    buttons=["copy"],
                     elem_id="transcript",
                     autoscroll=True,
                 )
@@ -140,4 +141,9 @@ def build() -> gr.Blocks:
 
 
 if __name__ == "__main__":
-    build().queue(max_size=8).launch(server_name="0.0.0.0", server_port=7860)
+    build().queue(max_size=8).launch(
+        server_name="0.0.0.0",
+        server_port=7860,
+        css=CSS,
+        theme=gr.themes.Soft(),
+    )
