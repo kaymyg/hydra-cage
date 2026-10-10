@@ -1,5 +1,5 @@
-# The app was written against the Gradio 5 API (Blocks, generator event
-# handlers, Textbox autoscroll). Gradio 6 changed enough to warrant an explicit
-# ceiling rather than a surprise on rebuild.
-gradio>=5.49,<6
-cryptography>=41.0
+# Ported to the Gradio 6 API (css/theme passed to launch(), Textbox
+# buttons=["copy"]). Keep the major-version ceiling so Gradio 7 is a
+# deliberate upgrade rather than a surprise on rebuild.
+gradio>=6.29.0,<7
+cryptography>=50.0.1
