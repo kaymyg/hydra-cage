@@ -366,6 +366,8 @@ published.
 
 ## Contributing
 
+Looking for something to work on? See [HELP_WANTED.md](HELP_WANTED.md).
+
 Bug reports, new adversary attacks, and PRs are welcome — see
 [`CONTRIBUTING.md`](CONTRIBUTING.md) for setup and what CI checks. In
 particular, `payload/` must never import from `hydra/`, and

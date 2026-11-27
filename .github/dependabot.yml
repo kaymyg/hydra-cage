@@ -7,6 +7,8 @@ updates:
     directory: "/"
     schedule:
       interval: "weekly"
+    cooldown:
+      default-days: 7
     open-pull-requests-limit: 5
     groups:
       pip-minor-patch:
@@ -15,6 +17,8 @@ updates:
     directory: "/hf_space"
     schedule:
       interval: "weekly"
+    cooldown:
+      default-days: 7
     open-pull-requests-limit: 5
     groups:
       pip_hf_space-minor-patch:
@@ -23,6 +27,8 @@ updates:
     directory: "/docker"
     schedule:
       interval: "weekly"
+    cooldown:
+      default-days: 7
     open-pull-requests-limit: 5
     groups:
       docker_docker-minor-patch:
@@ -31,6 +37,8 @@ updates:
     directory: "/hf_space"
     schedule:
       interval: "weekly"
+    cooldown:
+      default-days: 7
     open-pull-requests-limit: 5
     groups:
       docker_hf_space-minor-patch:
@@ -39,6 +47,8 @@ updates:
     directory: "/"
     schedule:
       interval: "monthly"
+    cooldown:
+      default-days: 7
     open-pull-requests-limit: 5
     groups:
       actions:
